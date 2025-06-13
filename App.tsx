@@ -5,101 +5,95 @@
  * @format
  */
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import React, {useState} from 'react';
+import {SafeAreaView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import Animated from 'react-native-reanimated';
+import codePush, {DownloadProgress} from 'react-native-code-push';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+let codePushOptions = {checkFrequency: codePush.CheckFrequency.MANUAL};
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [syncState, setSyncState] = useState('');
+  const [appLabel, setAppLabel] = useState('');
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const codePushStatusChange = (syncStatus: codePush.SyncStatus) => {
+    console.log('syncStatus=====:', syncStatus, arrSyncStatus[syncStatus]);
+    setSyncState(state => {
+      return state + arrSyncStatus[syncStatus] + ' | ';
+    });
   };
-
+  const codePushDownloadProgress = (progress: DownloadProgress) => {
+    console.log('progress=====:', progress);
+  };
+  const onButtonPress = () => {
+    setSyncState('');
+    // codePush.restartApp();
+    // return;
+    codePush.sync(
+      {
+        updateDialog: true,
+        installMode: codePush.InstallMode.IMMEDIATE,
+      },
+      codePushStatusChange,
+      codePushDownloadProgress,
+    );
+  };
+  codePush
+    .getUpdateMetadata(codePush.UpdateState.RUNNING)
+    .then((metadata: any) => {
+      if (metadata && metadata.isFirstRun) {
+        const label = metadata.label;
+        setAppLabel(label);
+      }
+    });
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Code-push testing">version: 1.0</Section>
-        </View>
-      </ScrollView>
+    <SafeAreaView style={styles.safeArea}>
+      <Animated.View style={styles.content}>
+        <Text style={styles.title}>Code-push Testing</Text>
+        {/* <Text style={styles.text}>Press R to crash on reload</Text> */}
+        <Text style={styles.text}>Test code push test eas android </Text>
+        <Text style={styles.text}>Code-push label: {appLabel}</Text>
+        <TouchableOpacity onPress={onButtonPress}>
+          <Text style={{padding: 14, fontSize: 20, color: 'red'}}>
+            Press to Check for Updates:{syncState}
+          </Text>
+        </TouchableOpacity>
+      </Animated.View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  safeArea: {
+    flex: 1,
   },
-  sectionTitle: {
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
     fontSize: 24,
     fontWeight: '600',
+    paddingBottom: 30,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  text: {
+    paddingVertical: 10,
+    fontSize: 20,
   },
 });
+const MyApp = codePush(codePushOptions)(App);
+export default MyApp;
 
-export default App;
+const arrSyncStatus = [
+  'UP_TO_DATE',
+  'UPDATE_INSTALLED',
+  'UPDATE_IGNORED',
+  'UNKNOWN_ERROR',
+  'SYNC_IN_PROGRESS',
+  'CHECKING_FOR_UPDATE',
+  'AWAITING_USER_ACTION',
+  'DOWNLOADING_PACKAGE',
+  'INSTALLING_UPDATE',
+];
