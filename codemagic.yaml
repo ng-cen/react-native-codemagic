@@ -14,6 +14,8 @@ workflows:
       vars:
         PACKAGE_NAME: 'io.codemagic.sample.reactnative' # <-- Put your package name here e.g. com.domain.myapp
       node: v19.7.0
+      xcode: 16.2 # need to pick xcode version, to avoid error: The selected Xcode version is not available on this instance
+      cocoapods: default
     scripts:
       - name: Install npm dependencies
         script: |
@@ -61,7 +63,7 @@ workflows:
         XCODE_WORKSPACE: 'CodemagicCodepush.xcworkspace' # <-- Put the name of your Xcode workspace here
         XCODE_SCHEME: 'CodemagicCodepush' # <-- Put the name of your Xcode scheme here
         APP_ID: 2LQYQD27P7 # <-- Put the app id number here. This is found in App Store Connect > App > General > App Information
-      node: v19.7.0
+      node: v18.20.8
       xcode: 16.2
       cocoapods: default
     scripts:
