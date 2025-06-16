@@ -13,6 +13,7 @@ workflows:
         - google_play # <-- (Includes GCLOUD_SERVICE_ACCOUNT_CREDENTIALS <-- Put your google-services.json)
       vars:
         PACKAGE_NAME: 'io.codemagic.sample.reactnative' # <-- Put your package name here e.g. com.domain.myapp
+        GOOGLE_PLAY_TRACK: "alpha"
       node: v19.7.0
       xcode: 16.2 # need to pick xcode version, to avoid error: The selected Xcode version is not available on this instance
       cocoapods: default
@@ -23,21 +24,30 @@ workflows:
       - name: Set Android SDK location
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
-      - name: Build Android release
+      - name: Build Android AAB release
+        # script: |
+        #   LATEST_GOOGLE_PLAY_BUILD_NUMBER=$(google-play get-latest-build-number --package-name "$PACKAGE_NAME")
+        #   if [ -z LATEST_BUILD_NUMBER ]; then
+        #     # fallback in case no build number was found from google play. Alternatively, you can `exit 1` to fail the build
+        #     UPDATED_BUILD_NUMBER=$BUILD_NUMBER
+        #   else
+        #     UPDATED_BUILD_NUMBER=$(($LATEST_GOOGLE_PLAY_BUILD_NUMBER + 1))
+        #   fi
         script: |
-          LATEST_GOOGLE_PLAY_BUILD_NUMBER=$(google-play get-latest-build-number --package-name "$PACKAGE_NAME")
-          if [ -z LATEST_BUILD_NUMBER ]; then
-            # fallback in case no build number was found from google play. Alternatively, you can `exit 1` to fail the build
-            UPDATED_BUILD_NUMBER=$BUILD_NUMBER
-          else
-            UPDATED_BUILD_NUMBER=$(($LATEST_GOOGLE_PLAY_BUILD_NUMBER + 1))
-          fi
           cd android
           ./gradlew bundleRelease \
-            -PversionCode=$UPDATED_BUILD_NUMBER \
-            -PversionName=1.0.$UPDATED_BUILD_NUMBER
+            -PversionCode=$PROJECT_BUILD_NUMBER \
+            -PversionName=1.0.$PROJECT_BUILD_NUMBER
+      # - name: Build Android APK release
+      #   script: |
+      #     cd android
+      #     ./gradlew assembleRelease \
+      #       -PversionCode=$PROJECT_BUILD_NUMBER \
+      #       -PversionName=1.0.$PROJECT_BUILD_NUMBER
     artifacts:
       - android/app/build/outputs/**/*.aab
+      - android/app/build/outputs/**/*.apk
+      - android/app/release/**/*.apk
     publishing:
       email:
         recipients:
@@ -46,9 +56,9 @@ workflows:
         notify:
           success: true # To not receive a notification when a build succeeds
           failure: false # To not receive a notification when a build fails
-      google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-        track: alpha # Any default or custom track that is not in ‘draft’ status
+      # google_play:
+      #   credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+      #   track: alpha # Any default or custom track that is not in ‘draft’ status
   react-native-ios:
     name: React Native iOS Workflow
     max_build_duration: 120
