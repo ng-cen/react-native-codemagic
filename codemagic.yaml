@@ -38,12 +38,12 @@ workflows:
           ./gradlew bundleRelease \
             -PversionCode=$PROJECT_BUILD_NUMBER \
             -PversionName=1.0.$PROJECT_BUILD_NUMBER
-      # - name: Build Android APK release
-      #   script: |
-      #     cd android
-      #     ./gradlew assembleRelease \
-      #       -PversionCode=$PROJECT_BUILD_NUMBER \
-      #       -PversionName=1.0.$PROJECT_BUILD_NUMBER
+      - name: Build Android APK release
+        script: |
+          cd android
+          ./gradlew assembleRelease \
+            -PversionCode=$PROJECT_BUILD_NUMBER \
+            -PversionName=1.0.$PROJECT_BUILD_NUMBER
     artifacts:
       - android/app/build/outputs/**/*.aab
       - android/app/build/outputs/**/*.apk
