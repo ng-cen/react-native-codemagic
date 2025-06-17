@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">CodemagicCodepush</string>
     <string moduleConfig="true" name="CodePushServerUrl">https://codepush.pro/</string>
-    <string moduleConfig="true" name="CodePushDeploymentKey">FakeDeploymentKey</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">_zjDgckWIEL43ygp4-j3Ou_0s-al681b177d11ffadd7bf9a2c17</string>
 </resources>
