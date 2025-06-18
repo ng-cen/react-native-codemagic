@@ -1,0 +1,20 @@
+TS failed system trust
+Connection 11: system TLS Trust evaluation failed(-9802)
+Connection 11: TLS Trust encountered error 3:-9802
+Connection 11: encountered error(3:-9802)
+Task <DDA7C102-99D3-408F-BECE-5C35CFBA9764>.<1> HTTP load failed, 0/0 bytes (error code: -1200 [3:-9802])
+Task <DDA7C102-99D3-408F-BECE-5C35CFBA9764>.<1> finished with error [-1200] Error Domain=NSURLErrorDomain Code=-1200 "An SSL error has occurred and a secure connection to the server cannot be made." UserInfo={NSLocalizedRecoverySuggestion=Would you like to connect to the server anyway?, _kCFStreamErrorDomainKey=3, NSErrorPeerCertificateChainKey=(
+    "<cert(0x10c054800) s: codepush.pro i: pru.intranet.asia (t) >",
+    "<cert(0x10c074200) s: pru.intranet.asia (t)  i: pru.intranet.asia>",
+    "<cert(0x10c084e00) s: pru.intranet.asia i: PRU-VSGRHOSUBCA01-CA>"
+), NSErrorClientCertificateStateKey=0, NSErrorFailingURLKey=https://codepush.pro/v0.1/public/codepush/update_check?deployment_key=aH8e3hqM5__-m0kTvVgRCSqpilAg681b177d11ffadd7bf9a2c17&app_version=1.0.0&client_unique_id=1ED16FF9-7B15-4760-B693-74EDF62CE693, NSErrorFailingURLStringKey=https://codepush.pro/v0.1/public/codepush/update_check?deployment_key=aH8e3hqM5__-m0kTvVgRCSqpilAg681b177d11ffadd7bf9a2c17&app_version=1.0.0&client_unique_id=1ED16FF9-7B15-4760-B693-74EDF62CE693, NSUnderlyingError=0x600000c7ff60 {Error Domain=kCFErrorDomainCFNetwork Code=-1200 "(null)" UserInfo={_kCFStreamPropertySSLClientCertificateState=0, kCFStreamPropertySSLPeerTrust=<SecTrustRef: 0x6000033b4b40>, _kCFNetworkCFStreamSSLErrorOriginalValue=-9802, _kCFStreamErrorDomainKey=3, _kCFStreamErrorCodeKey=-9802, kCFStreamPropertySSLPeerCertificates=(
+    "<cert(0x10c054800) s: codepush.pro i: pru.intranet.asia (t) >",
+    "<cert(0x10c074200) s: pru.intranet.asia (t)  i: pru.intranet.asia>",
+    "<cert(0x10c084e00) s: pru.intranet.asia i: PRU-VSGRHOSUBCA01-CA>"
+)}}, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <DDA7C102-99D3-408F-BECE-5C35CFBA9764>.<1>"
+), _kCFStreamErrorCodeKey=-9802, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <DDA7C102-99D3-408F-BECE-5C35CFBA9764>.<1>, NSURLErrorFailingURLPeerTrustErrorKey=<SecTrustRef: 0x6000033b4b40>, NSLocalizedDescription=An SSL error has occurred and a secure connection to the server cannot be made.}
+
+
+
+Logging Error: Failed to initialize logging system. Log messages may be missing. If this issue persists, try setting IDEPreferLogStreaming=YES in the active scheme actions environment variables.

@@ -6,6 +6,20 @@ code-push-standalone login "https://codepush.pro" --key push-token-key
 
 ## add app
 
+"TestApp-iOS" 
+┌────────────┬──────────────────────────────────────────────────────┐
+│ Name       │ Deployment Key                                       │
+├────────────┼──────────────────────────────────────────────────────┤
+│ Production │ 7IHviOETvsmPHkWIZyFYmo1ICUms681b177d11ffadd7bf9a2c17 │
+├────────────┼──────────────────────────────────────────────────────┤
+│ Staging    │ aH8e3hqM5__-m0kTvVgRCSqpilAg681b177d11ffadd7bf9a2c17 │
+└────────────┴──────────────────────────────────────────────────────┘
+
+TestApp-Android
+Name       	│ Deployment Key  
+Production 	│ 2lBcDUSk64r1uTgILZOnp5zE-4NL681b177d11ffadd7bf9a2c17 
+Staging    	│ _zjDgckWIEL43ygp4-j3Ou_0s-al681b177d11ffadd7bf9a2c17
+
 code-push-standalone app add TestApp-Android
 code-push-standalone app add TestApp-iOS
 
@@ -56,3 +70,13 @@ TestApp-Android \
 yarn code-push-standalone deployment history TestApp-Android Staging
 ==== Production
 yarn code-push-standalone deployment history TestApp-Android Production
+
+## codePushStatusChange
+/**
+ * e2e codePushStatusChange for an code-push.
+ * 5, 'CHECKING_FOR_UPDATE'
+ * 6, 'AWAITING_USER_ACTION': await to click "continue" button in the dialog
+ * 7, 'DOWNLOADING_PACKAGE'
+ * 8, 'INSTALLING_UPDATE'
+ * 1, 'UPDATE_INSTALLED'
+ */
