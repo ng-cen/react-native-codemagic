@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 import Animated from 'react-native-reanimated';
@@ -39,20 +39,24 @@ function App(): JSX.Element {
       codePushDownloadProgress,
     );
   };
-  codePush
-    .getUpdateMetadata(codePush.UpdateState.RUNNING)
-    .then((metadata: any) => {
-      if (metadata && metadata.isFirstRun) {
-        const label = metadata.label;
-        setAppLabel(label);
-      }
-    });
+  useEffect(() => {
+    codePush
+      .getUpdateMetadata(codePush.UpdateState.RUNNING)
+      .then((metadata: any) => {
+        console.log('🚀====== ~ .then ~ metadata:', metadata);
+        if (metadata) {
+          const label = metadata.label;
+          setAppLabel(label);
+        }
+      });
+  }, []);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <Animated.View style={styles.content}>
         <Text style={styles.title}>Code-push Testing</Text>
         {/* <Text style={styles.text}>Press R to crash on reload</Text> */}
-        <Text style={styles.text}>Test code push test eas android </Text>
+        <Text style={styles.text}>Test code push test </Text>
         <Text style={styles.text}>Code-push label: {appLabel}</Text>
         <TouchableOpacity onPress={onButtonPress}>
           <Text style={{padding: 14, fontSize: 20, color: 'red'}}>
@@ -97,3 +101,13 @@ const arrSyncStatus = [
   'DOWNLOADING_PACKAGE',
   'INSTALLING_UPDATE',
 ];
+
+
+/**
+ * e2e codePushStatusChange for an code-push.
+ * 5, 'CHECKING_FOR_UPDATE'
+ * 6, 'AWAITING_USER_ACTION': await to click "continue" button in the dialog
+ * 7, 'DOWNLOADING_PACKAGE'
+ * 8, 'INSTALLING_UPDATE'
+ * 1, 'UPDATE_INSTALLED'
+ */
